@@ -7,8 +7,9 @@ const Book_Seed = require('../data/books_seed');
 
 const {
    trace,
-   apiStub
+   apiErrorStub
 } = require('../helper');
+const { response } = require('express');
 
 // RETRIEVE - SEED DATA
 
@@ -27,9 +28,12 @@ books.get('/:id', async (req, res) => {
    const id = req.params.id;
    trace('/books/:id (GET)')(id);
 
-   const foundBook = await Book.findById(id);
-
-   res.json(foundBook);
+   try {
+      const foundBook = await Book.findById(id);
+      res.json(foundBook);
+   } catch(err) {
+      res.redirect('/error')
+   }
 })
 
 // CREATE
@@ -52,8 +56,10 @@ books.put('/:id', async (req, res) => {
    const id = params.id;
    const body = req.body;
    trace('/books/:id (PUT)')(id);
-   
-   const updatedBook = await Book.findByIdAndUpdate(id, body,{ new: true });
+
+   const updatedBook = await Book.findByIdAndUpdate(id, body, {
+      new: true
+   });
    console.log(updatedBook)
    res.redirect(`/books/${id}`)
 
@@ -81,6 +87,15 @@ books.get('/', async (req, res) => {
 
    res.json(foundBooks);
 })
+
+// ERROR
+
+books.get('*', async (req, res) => {
+   const error = '404 - resource not found';
+   trace(error)('');
+
+   res.json(apiErrorStub(error));
+});
 
 
 module.exports = books;

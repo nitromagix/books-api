@@ -17,6 +17,13 @@ const apiStub = (name) => {
    })
 };
 
+const apiErrorStub = (error) => {
+
+   return ({
+      error: error
+   })
+};
+
 const dateToMMDDYYYY = date => `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
 
 
@@ -24,5 +31,6 @@ module.exports = {
    trace,
    stub,
    apiStub,
+   apiErrorStub,
    dateToMMDDYYYY
 }
