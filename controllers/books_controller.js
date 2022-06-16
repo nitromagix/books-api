@@ -41,7 +41,7 @@ books.post('/', async (req, res) => {
       req.body.imageURL = undefined;
    }
 
-   const newBook = await Bread.create(req.body);
+   const newBook = await Book.create(req.body);
    res.redirect('/books');
 })
 
